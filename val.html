@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valentine 💖</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    overflow: hidden;
+    color: white;
+}
+
+.card {
+    text-align: center;
+    background: rgba(255,255,255,0.15);
+    padding: 60px;
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    width: 450px; /* increased width */
+}
+
+.buttons {
+    margin-top: 35px;
+    position: relative;
+    height: 140px;
+}
+
+button {
+    padding: 14px 28px; /* bigger buttons */
+    font-size: 18px;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    position: absolute;
+    transition: 0.15s;
+}
+
+#yesBtn {
+    background: #ff3b5c;
+    color: white;
+    left: 50px;
+}
+
+#noBtn {
+    background: white;
+    color: #ff3b5c;
+    right: 50px;
+}
+
+#message {
+    margin-top: 25px;
+    font-size: 20px;
+    display: none;
+}
+
+#noImage, #yesImage {
+    width: 350px; /* bigger images */
+    margin-top: 25px;
+    display: none;
+    border-radius: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Hey ❤️</h2>
+    <p>I really enjoy spending time with you...</p>
+    <h3>Will you be my Valentine?</h3>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No 😢</button>
+    </div>
+
+    <p id="message">You just made me the happiest man on Earth 😊🌹</p>
+
+    <!-- Images shown when clicked -->
+    <img id="yesImage" src="IMG_0126.jpg" alt="Yayyy">
+    <img id="noImage" src="IMG_0108.jpg" alt="Sad reaction">
+</div>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const message = document.getElementById("message");
+const yesImage = document.getElementById("yesImage");
+const noImage = document.getElementById("noImage");
+
+let yesBtnScale = 1;
+let noButtonActive = true; // Tracks if No button should move
+
+// YES BUTTON CLICK
+yesBtn.addEventListener("click", () => {
+    message.style.display = "block";
+    yesImage.style.display = "block";
+    noImage.style.display = "none";
+
+    // Freeze No button
+    noButtonActive = false;
+    noBtn.style.transform = "";
+
+    // Reset Yes button scale
+    yesBtnScale = 1;
+    yesBtn.style.transform = "";
+});
+
+// NO BUTTON CLICK
+noBtn.addEventListener("click", () => {
+    noImage.style.display = "block";
+    message.style.display = "none";
+    yesImage.style.display = "none";
+
+    // Reset Yes button scale
+    yesBtnScale = 1;
+    yesBtn.style.transform = "";
+});
+
+// NO BUTTON RUN AWAY + YES BUTTON GROW
+document.addEventListener("mousemove", (event) => {
+    if (!noButtonActive) return;
+
+    const btnRect = noBtn.getBoundingClientRect();
+    const distanceX = event.clientX - (btnRect.left + btnRect.width / 2);
+    const distanceY = event.clientY - (btnRect.top + btnRect.height / 2);
+    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+    if (distance < 100) {
+        // Move No button less aggressively
+        const moveX = distanceX * -0.8;
+        const moveY = distanceY * -0.8;
+        noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+        // Grow Yes button
+        yesBtnScale += 0.02;
+        if (yesBtnScale > 2) yesBtnScale = 2;
+        yesBtn.style.transform = `scale(${yesBtnScale})`;
+    }
+});
+</script>
+
+</body>
+</html>
