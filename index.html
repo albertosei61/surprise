@@ -6,7 +6,6 @@
 <title>Be My Valentine 💖</title>
 
 <style>
-
 /* BODY */
 body {
     margin:0;
@@ -26,7 +25,6 @@ body {
     font-size:20px;
     animation: float 6s linear infinite;
 }
-
 @keyframes float {
     0% { transform:translateY(100vh); opacity:1; }
     100% { transform:translateY(-10vh); opacity:0; }
@@ -51,7 +49,6 @@ body {
     font-weight:bold;
     animation:pulse 2s infinite;
 }
-
 @keyframes pulse {
     0% { transform:scale(1); }
     50% { transform:scale(1.1); }
@@ -64,7 +61,6 @@ body {
     position:relative;
     height:110px;
 }
-
 button {
     padding:12px 22px;
     border:none;
@@ -74,47 +70,17 @@ button {
     font-size:16px;
     transition:0.2s;
 }
-
-#yesBtn {
-    background:#ff3b5c;
-    color:white;
-    left:20%;
-}
-
-#noBtn {
-    background:white;
-    color:#ff3b5c;
-    right:20%;
-}
+#yesBtn { background:#ff3b5c; color:white; left:20%; }
+#noBtn { background:white; color:#ff3b5c; right:20%; }
 
 /* TIMER */
-.timer {
-    margin-top:15px;
-    font-size:16px;
-}
+.timer { margin-top:15px; font-size:16px; }
 
 /* CAROUSEL */
-.carousel {
-    position:relative;
-    overflow:hidden;
-    margin-top:20px;
-}
-
-.carousel-track {
-    display:flex;
-    transition:transform 0.4s ease;
-}
-
-.slide {
-    min-width:100%;
-}
-
-.slide img {
-    width:100%;
-    max-height:280px;
-    object-fit:cover;
-    border-radius:15px;
-}
+.carousel { position:relative; overflow:hidden; margin-top:20px; }
+.carousel-track { display:flex; transition:transform 0.4s ease; }
+.slide { min-width:100%; display:flex; flex-direction:column; align-items:center; }
+.slide img, .carousel-video { width:100%; max-height:280px; object-fit:cover; border-radius:15px; margin-bottom:5px; }
 
 .carousel-btn {
     position:absolute;
@@ -126,7 +92,6 @@ button {
     cursor:pointer;
     font-size:20px;
 }
-
 .prev { left:5px; }
 .next { right:5px; }
 
@@ -145,36 +110,25 @@ button {
     display:none;
     z-index:5;
 }
-
-.popup button {
-    position:static;
-    margin-top:15px;
-    background:#ff3b5c;
-    color:white;
-}
+.popup button { position:static; margin-top:15px; background:#ff3b5c; color:white; }
 
 /* CONFETTI */
 .confetti {
     position:fixed;
-    width:10px;
-    height:10px;
+    width:6px;
+    height:6px;
     background:white;
+    box-shadow: 0 0 8px rgba(255,182,193,0.8);
     top:-10px;
-    animation:confettiFall 3s linear forwards;
+    animation: sparkleFall 3s linear forwards;
 }
-
-@keyframes confettiFall {
-    to {
-        transform:translateY(100vh) rotate(720deg);
-    }
-}
-
+@keyframes sparkleFall { to { transform:translateY(100vh) rotate(720deg); opacity: 0; } }
 </style>
 </head>
 
 <body>
 
-<!-- FLOATING HEART CONTAINER -->
+<!-- FLOATING HEARTS -->
 <div id="hearts"></div>
 
 <div class="card">
@@ -210,7 +164,6 @@ button {
 <p>I can't wait to make more memories with you 💕</p>
 </div>
 
-
 <div class="slide">
 <img src="IMG_0946test.jpg">
 <p>You always make me smile 😊</p>
@@ -230,12 +183,19 @@ button {
 <img src="IMG_2970test.JPEG">
 <p>I'm so lucky to have you in my life 💖</p>
 </div>
+
+<!-- VIDEO SLIDE -->
+<div class="slide">
+<video class="carousel-video" controls playsinline>
+<source src="filtered-F944D31A-77F1-40E8-AC42-C0CD117EF711.MP4" type="video/mp4">
+</video>
+<p>One of my favorite memories with you 🎥❤️</p>
+</div>
+
 </div>
 
 <button class="carousel-btn prev">❮</button>
 <button class="carousel-btn next">❯</button>
-</div>
-
 </div>
 
 <!-- LOVE LETTER -->
@@ -243,17 +203,16 @@ button {
 <h3>💌 A Little Note</h3>
 <p>
 You make my days brighter and my heart lighter.  
-I'm really grateful for you.   
+I'm really grateful for you.
 </p>
 <button onclick="closePopup()">Close</button>
 </div>
 
-<audio id="music" loop autoplay>
-<source src="ForMyHand.mp3">
+<audio id="music" loop>
+<source src="ForMyHand.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-
 /* FLOATING HEARTS */
 setInterval(()=>{
     let heart=document.createElement("div");
@@ -265,16 +224,13 @@ setInterval(()=>{
     setTimeout(()=>heart.remove(),6000);
 },500);
 
-// /* TIMER - EDIT THIS DATE */
+// /* TIMER */
 // const startDate=new Date("2024-01-01");
-
 // function updateTimer(){
 //     let now=new Date();
 //     let diff=now-startDate;
-
 //     let days=Math.floor(diff/(1000*60*60*24));
-//     document.getElementById("timer").innerText=
-//         `We've known each other for ${days} days ❤️`;
+//     document.getElementById("timer").innerText=`We've known each other for ${days} days ❤️`;
 // }
 // setInterval(updateTimer,1000);
 // updateTimer();
@@ -290,9 +246,7 @@ yesBtn.onclick=()=>{
     noBtn.style.transform="translate(0,0)";
 };
 
-noBtn.onclick=()=>{
-    alert("You sure? 😭");
-};
+noBtn.onclick=()=>{ alert("You sure? 😭"); };
 
 /* RUN AWAY NO BUTTON */
 document.addEventListener("mousemove",(e)=>{
@@ -300,10 +254,7 @@ document.addEventListener("mousemove",(e)=>{
     let dx=e.clientX-(rect.left+rect.width/2);
     let dy=e.clientY-(rect.top+rect.height/2);
     let dist=Math.sqrt(dx*dx+dy*dy);
-
-    if(dist<120){
-        noBtn.style.transform=`translate(${-dx*0.6}px,${-dy*0.6}px)`;
-    }
+    if(dist<120){ noBtn.style.transform=`translate(${-dx*0.6}px,${-dy*0.6}px)`; }
 });
 
 /* CONFETTI */
@@ -319,48 +270,57 @@ function launchConfetti(){
 }
 
 /* CLOSE POPUP */
-function closePopup(){
-    popup.style.display="none";
-}
+function closePopup(){ popup.style.display="none"; }
 
 /* CAROUSEL */
 const track=document.querySelector(".carousel-track");
 const slides=document.querySelectorAll(".slide");
 let index=0;
 
-document.querySelector(".next").onclick=()=>{
-    index=(index+1)%slides.length;
+function stopVideos(){
+    document.querySelectorAll("video").forEach(video=>{
+        video.pause();
+        video.currentTime=0;
+    });
+}
+
+function updateCarousel(){
     track.style.transform=`translateX(-${index*100}%)`;
+    let currentSlide = slides[index];
+    let video = currentSlide.querySelector("video");
+    if(video){ video.play().catch(()=>{}); }
+}
+
+document.querySelector(".next").onclick=()=>{
+    stopVideos();
+    index=(index+1)%slides.length;
+    updateCarousel();
 };
 
 document.querySelector(".prev").onclick=()=>{
+    stopVideos();
     index=(index-1+slides.length)%slides.length;
-    track.style.transform=`translateX(-${index*100}%)`;
+    updateCarousel();
 };
 
 /* SWIPE */
 let startX=0;
-
-track.addEventListener("touchstart",e=>{
-    startX=e.touches[0].clientX;
-});
-
+track.addEventListener("touchstart",e=>{ startX=e.touches[0].clientX; });
 track.addEventListener("touchend",e=>{
+    stopVideos();
     let endX=e.changedTouches[0].clientX;
-
     if(startX-endX>50) index++;
     if(endX-startX>50) index--;
-
     index=(index+slides.length)%slides.length;
-    track.style.transform=`translateX(-${index*100}%)`;
+    updateCarousel();
 });
 
 /* MUSIC AUTOPLAY */
 const music=document.getElementById("music");
-
 function startMusic(){
     music.play().catch(()=>{
         document.addEventListener("click",()=>music.play(),{once:true});
+        document.addEventListener("touchstart",()=>music.play(),{once:true});
     });
 }
 window.onload=startMusic;
