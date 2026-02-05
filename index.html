@@ -1,154 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
 
 <style>
+
+/* BODY */
 body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin:0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    overflow: hidden;
-    color: white;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    color:white;
+    overflow:hidden;
 }
 
+/* FLOATING HEARTS */
+.heart {
+    position:absolute;
+    font-size:20px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform:translateY(100vh); opacity:1; }
+    100% { transform:translateY(-10vh); opacity:0; }
+}
+
+/* CARD */
 .card {
-    text-align: center;
-    background: rgba(255,255,255,0.15);
-    padding: 60px;
-    border-radius: 25px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-    width: 450px; /* increased width */
+    width:90%;
+    max-width:520px;
+    background:rgba(255,255,255,0.15);
+    padding:25px;
+    border-radius:25px;
+    backdrop-filter:blur(10px);
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.2);
+    z-index:2;
 }
 
+/* NAME ANIMATION */
+.name {
+    font-size:28px;
+    font-weight:bold;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform:scale(1); }
+    50% { transform:scale(1.1); }
+    100% { transform:scale(1); }
+}
+
+/* BUTTONS */
 .buttons {
-    margin-top: 35px;
-    position: relative;
-    height: 140px;
+    margin-top:20px;
+    position:relative;
+    height:110px;
 }
 
 button {
-    padding: 14px 28px; /* bigger buttons */
-    font-size: 18px;
-    border: none;
-    border-radius: 35px;
-    cursor: pointer;
-    position: absolute;
-    transition: 0.15s;
+    padding:12px 22px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    position:absolute;
+    font-size:16px;
+    transition:0.2s;
 }
 
 #yesBtn {
-    background: #ff3b5c;
-    color: white;
-    left: 50px;
+    background:#ff3b5c;
+    color:white;
+    left:20%;
 }
 
 #noBtn {
-    background: white;
-    color: #ff3b5c;
-    right: 50px;
+    background:white;
+    color:#ff3b5c;
+    right:20%;
 }
 
-#message {
-    margin-top: 25px;
-    font-size: 20px;
-    display: none;
+/* TIMER */
+.timer {
+    margin-top:15px;
+    font-size:16px;
 }
 
-#noImage, #yesImage {
-    width: 350px; /* bigger images */
-    margin-top: 25px;
-    display: none;
-    border-radius: 20px;
+/* CAROUSEL */
+.carousel {
+    position:relative;
+    overflow:hidden;
+    margin-top:20px;
 }
+
+.carousel-track {
+    display:flex;
+    transition:transform 0.4s ease;
+}
+
+.slide {
+    min-width:100%;
+}
+
+.slide img {
+    width:100%;
+    max-height:280px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+.carousel-btn {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    border:none;
+    background:rgba(255,255,255,0.6);
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.prev { left:5px; }
+.next { right:5px; }
+
+/* LOVE LETTER POPUP */
+.popup {
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:white;
+    color:black;
+    padding:25px;
+    border-radius:20px;
+    width:80%;
+    max-width:400px;
+    display:none;
+    z-index:5;
+}
+
+.popup button {
+    position:static;
+    margin-top:15px;
+    background:#ff3b5c;
+    color:white;
+}
+
+/* CONFETTI */
+.confetti {
+    position:fixed;
+    width:10px;
+    height:10px;
+    background:white;
+    top:-10px;
+    animation:confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform:translateY(100vh) rotate(720deg);
+    }
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- FLOATING HEART CONTAINER -->
+<div id="hearts"></div>
+
 <div class="card">
-    <h2>Hey ❤️</h2>
-    <p>I really enjoy spending time with you...</p>
-    <h3>Will you be my Valentine?</h3>
 
-    <div class="buttons">
-        <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">No 😢</button>
-    </div>
+<div class="name">Hey Beautiful ❤️</div>
 
-    <p id="message">You just made me the happiest man on Earth 😊🌹</p>
+<p>I really enjoy spending time with you...</p>
+<h3>Will you be my Valentine?</h3>
 
-    <!-- Images shown when clicked -->
-    <img id="yesImage" src="IMG_0126.jpg" alt="Yayyy">
-    <img id="noImage" src="IMG_0108.jpg" alt="Sad reaction">
+<div class="timer" id="timer"></div>
+
+<div class="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😢</button>
 </div>
 
+<!-- CAROUSEL STORY MODE -->
+<div class="carousel">
+<div class="carousel-track">
+
+<div class="slide">
+<img src="image.png">
+<p>One of my favorite memories ❤️</p> 
+</div>
+
+<div class="slide">
+<img src="IMG_0126test.jpg">
+<p>Another beautiful moment together ❤️</p>
+</div>
+
+<div class="slide">
+<img src="IMG_0920test.JPEG">
+<p>I can't wait to make more memories with you 💕</p>
+</div>
+
+
+<div class="slide">
+<img src="IMG_0946test.jpg">
+<p>You always make me smile 😊</p>
+</div>
+
+<div class="slide">
+<img src="IMG_1216test.JPEG">
+<p>I can't wait to make more memories with you 💕</p>
+</div>
+
+<div class="slide">
+<img src="IMG_1511test.JPEG">   
+<p>Every moment with you is a treasure 💖</p>
+</div>
+
+<div class="slide">
+<img src="IMG_2970test.JPEG">
+<p>I'm so lucky to have you in my life 💖</p>
+</div>
+</div>
+
+<button class="carousel-btn prev">❮</button>
+<button class="carousel-btn next">❯</button>
+</div>
+
+</div>
+
+<!-- LOVE LETTER -->
+<div class="popup" id="lovePopup">
+<h3>💌 A Little Note</h3>
+<p>
+You make my days brighter and my heart lighter.  
+I'm really grateful for you.   
+</p>
+<button onclick="closePopup()">Close</button>
+</div>
+
+<audio id="music" loop autoplay>
+<source src="ForMyHand.mp3">
+</audio>
+
 <script>
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const message = document.getElementById("message");
-const yesImage = document.getElementById("yesImage");
-const noImage = document.getElementById("noImage");
 
-let yesBtnScale = 1;
-let noButtonActive = true; // Tracks if No button should move
+/* FLOATING HEARTS */
+setInterval(()=>{
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💖";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(20+Math.random()*20)+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+},500);
 
-// YES BUTTON CLICK
-yesBtn.addEventListener("click", () => {
-    message.style.display = "block";
-    yesImage.style.display = "block";
-    noImage.style.display = "none";
+// /* TIMER - EDIT THIS DATE */
+// const startDate=new Date("2024-01-01");
 
-    // Freeze No button
-    noButtonActive = false;
-    noBtn.style.transform = "";
+// function updateTimer(){
+//     let now=new Date();
+//     let diff=now-startDate;
 
-    // Reset Yes button scale
-    yesBtnScale = 1;
-    yesBtn.style.transform = "";
-});
+//     let days=Math.floor(diff/(1000*60*60*24));
+//     document.getElementById("timer").innerText=
+//         `We've known each other for ${days} days ❤️`;
+// }
+// setInterval(updateTimer,1000);
+// updateTimer();
 
-// NO BUTTON CLICK
-noBtn.addEventListener("click", () => {
-    noImage.style.display = "block";
-    message.style.display = "none";
-    yesImage.style.display = "none";
+/* BUTTONS */
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const popup=document.getElementById("lovePopup");
 
-    // Reset Yes button scale
-    yesBtnScale = 1;
-    yesBtn.style.transform = "";
-});
+yesBtn.onclick=()=>{
+    launchConfetti();
+    popup.style.display="block";
+    noBtn.style.transform="translate(0,0)";
+};
 
-// NO BUTTON RUN AWAY + YES BUTTON GROW
-document.addEventListener("mousemove", (event) => {
-    if (!noButtonActive) return;
+noBtn.onclick=()=>{
+    alert("You sure? 😭");
+};
 
-    const btnRect = noBtn.getBoundingClientRect();
-    const distanceX = event.clientX - (btnRect.left + btnRect.width / 2);
-    const distanceY = event.clientY - (btnRect.top + btnRect.height / 2);
-    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+/* RUN AWAY NO BUTTON */
+document.addEventListener("mousemove",(e)=>{
+    let rect=noBtn.getBoundingClientRect();
+    let dx=e.clientX-(rect.left+rect.width/2);
+    let dy=e.clientY-(rect.top+rect.height/2);
+    let dist=Math.sqrt(dx*dx+dy*dy);
 
-    if (distance < 100) {
-        // Move No button less aggressively
-        const moveX = distanceX * -0.8;
-        const moveY = distanceY * -0.8;
-        noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
-
-        // Grow Yes button
-        yesBtnScale += 0.02;
-        if (yesBtnScale > 2) yesBtnScale = 2;
-        yesBtn.style.transform = `scale(${yesBtnScale})`;
+    if(dist<120){
+        noBtn.style.transform=`translate(${-dx*0.6}px,${-dy*0.6}px)`;
     }
 });
-</script>
 
+/* CONFETTI */
+function launchConfetti(){
+    for(let i=0;i<80;i++){
+        let conf=document.createElement("div");
+        conf.className="confetti";
+        conf.style.left=Math.random()*100+"vw";
+        conf.style.background=`hsl(${Math.random()*360},100%,70%)`;
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),3000);
+    }
+}
+
+/* CLOSE POPUP */
+function closePopup(){
+    popup.style.display="none";
+}
+
+/* CAROUSEL */
+const track=document.querySelector(".carousel-track");
+const slides=document.querySelectorAll(".slide");
+let index=0;
+
+document.querySelector(".next").onclick=()=>{
+    index=(index+1)%slides.length;
+    track.style.transform=`translateX(-${index*100}%)`;
+};
+
+document.querySelector(".prev").onclick=()=>{
+    index=(index-1+slides.length)%slides.length;
+    track.style.transform=`translateX(-${index*100}%)`;
+};
+
+/* SWIPE */
+let startX=0;
+
+track.addEventListener("touchstart",e=>{
+    startX=e.touches[0].clientX;
+});
+
+track.addEventListener("touchend",e=>{
+    let endX=e.changedTouches[0].clientX;
+
+    if(startX-endX>50) index++;
+    if(endX-startX>50) index--;
+
+    index=(index+slides.length)%slides.length;
+    track.style.transform=`translateX(-${index*100}%)`;
+});
+
+/* MUSIC AUTOPLAY */
+const music=document.getElementById("music");
+
+function startMusic(){
+    music.play().catch(()=>{
+        document.addEventListener("click",()=>music.play(),{once:true});
+    });
+}
+window.onload=startMusic;
+
+</script>
 </body>
 </html>
